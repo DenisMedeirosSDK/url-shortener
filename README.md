@@ -12,9 +12,9 @@ Um projeto simples para encurtar URl.
 ## Iniciando
 
 ```bash
-$ git clone https://github.com/DenisMedeirosSDK/url-shortener.git
+$ git clone https://github.com/DenisMedeirosSDK/Coffin-Boat.git
 
-$ cd url-shortener
+$ cd Coffin-Boat
 
 $ npm install
 ```
