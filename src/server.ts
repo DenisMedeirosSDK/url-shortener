@@ -1,15 +1,23 @@
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
 
 import { getConnection } from './utils/connectDatabase';
 import { routes } from './routes';
+import { limiter } from './middlewares/rateLimiter';
 
 getConnection();
 
 const PORT = process.env.PORT as string;
 
 const app = express();
+
+app.use(helmet());
+app.use(cors());
 app.use(express.json());
+
+app.use(limiter);
 
 app.use(routes);
 
