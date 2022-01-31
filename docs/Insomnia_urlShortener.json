@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2022-01-31T20:29:33.459Z",
+  "__export_date": "2022-01-31T20:40:52.798Z",
   "__export_source": "insomnia.desktop.app:v2021.7.2",
   "resources": [
     {
@@ -30,9 +30,9 @@
     {
       "_id": "wrk_7069d9ddca184f258b62d30bbef91290",
       "parentId": null,
-      "modified": 1643643491838,
+      "modified": 1643661505061,
       "created": 1643643491838,
-      "name": "Url Shortener",
+      "name": "Coffin Boat",
       "description": "",
       "scope": "collection",
       "_type": "workspace"
@@ -40,7 +40,7 @@
     {
       "_id": "req_3716b21a20f940f38236b72e9bee4e17",
       "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
-      "modified": 1643660929785,
+      "modified": 1643661523912,
       "created": 1643643498852,
       "url": "{{ _.baseUlrl }}",
       "name": "Create",
