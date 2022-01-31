@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { UrlShortener } from '../schemas/UrlShortener';
 import { generateEncoded } from '../utils/generateEncoded';
+import { getRedis, setRedis } from '../utils/connectRedis';
 
 export async function createUrlShortener(
   request: Request,
@@ -33,6 +34,11 @@ export async function createUrlShortener(
     createdAt: new Date(Date.now()),
   });
 
+  setRedis(
+    `urlShortener-${urlShortener.encoded}`,
+    JSON.stringify(urlShortener)
+  );
+
   return response.status(201).json(urlShortener);
 }
 
@@ -43,17 +49,26 @@ export async function redirectUrlShortener(
   try {
     const { encoded } = request.params;
 
-    const urlShortener = await UrlShortener.findOne({
-      encoded,
-    });
+    const urlShortenerRedis = await getRedis(`urlShortener-${encoded}`);
+
+    let urlShortener = JSON.parse(urlShortenerRedis);
 
     if (!urlShortener) {
-      throw new Error('Url shortener not exists!');
+      urlShortener = await UrlShortener.findOne({
+        encoded,
+      });
+      if (urlShortener) {
+        setRedis(
+          `urlShortener-${urlShortener.encoded}`,
+          JSON.stringify(urlShortener)
+        );
+      }
     }
 
     if (urlShortener.originalUrl === null) {
       return response.status(404);
     }
+
     const originalUrl = urlShortener.originalUrl;
 
     response.status(302).redirect(originalUrl);
