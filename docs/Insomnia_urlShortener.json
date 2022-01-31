@@ -1,0 +1,143 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2022-01-31T20:29:33.459Z",
+  "__export_source": "insomnia.desktop.app:v2021.7.2",
+  "resources": [
+    {
+      "_id": "req_4636aa40814a44799549145d7483ff50",
+      "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "modified": 1643646985332,
+      "created": 1643645947644,
+      "url": "{{ _.baseUlrl }}/{% response 'body', 'req_3716b21a20f940f38236b72e9bee4e17', 'b64::JC5lbmNvZGVk::46b', 'never', 60 %}",
+      "name": "Redirect",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1643645947644,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "parentId": null,
+      "modified": 1643643491838,
+      "created": 1643643491838,
+      "name": "Url Shortener",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_3716b21a20f940f38236b72e9bee4e17",
+      "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "modified": 1643660929785,
+      "created": 1643643498852,
+      "url": "{{ _.baseUlrl }}",
+      "name": "Create",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"originalUrl\": \"https://google.com\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_158e331ea14e45119a58642e7d6fb4ce"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1643643498852,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_663c53d2ac8b0c80e43333e17c8caa493754b097",
+      "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "modified": 1643646970229,
+      "created": 1643643491843,
+      "name": "Base Environment",
+      "data": { "baseUlrl": "{{protocol}}://{{host}}:{{port}}" },
+      "dataPropertyOrder": { "&": ["baseUlrl"] },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1643643491844,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_663c53d2ac8b0c80e43333e17c8caa493754b097",
+      "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "modified": 1643659876944,
+      "created": 1643643491845,
+      "name": "Default Jar",
+      "cookies": [
+        {
+          "key": "1P_JAR",
+          "value": "2022-01-31-20",
+          "expires": "2022-03-02T20:11:16.000Z",
+          "domain": "google.com",
+          "path": "/",
+          "secure": true,
+          "hostOnly": false,
+          "creation": "2022-01-31T16:45:34.456Z",
+          "lastAccessed": "2022-01-31T20:11:16.944Z",
+          "id": "5748767808853235"
+        },
+        {
+          "key": "NID",
+          "value": "511=hO6EqAJLrj7oy2-BK7cBQMk9GHNP8CO5L4N6m_LvBIYivt1__dLp_71x_UMJVBWG_ZWTAjMOPf2L6_B45p9Yfq3fkHl99GwoJDvT39mN1lprxq37L7vDFLd_NYGvUKJ5PWfIN2mdVMhlbW9MNQ7KExvR-vULFBMKatveY81HKzQ",
+          "expires": "2022-08-02T17:03:23.000Z",
+          "domain": "google.com",
+          "path": "/",
+          "httpOnly": true,
+          "hostOnly": false,
+          "creation": "2022-01-31T16:45:34.461Z",
+          "lastAccessed": "2022-01-31T17:03:23.164Z",
+          "id": "5700386787727396"
+        }
+      ],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_1402ba3957174514b3cc1854c3bfa3a2",
+      "parentId": "wrk_7069d9ddca184f258b62d30bbef91290",
+      "modified": 1643643491839,
+      "created": 1643643491839,
+      "fileName": "Url Shortener",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    },
+    {
+      "_id": "env_ddd4665b11e54685b73db4a68ddaee69",
+      "parentId": "env_663c53d2ac8b0c80e43333e17c8caa493754b097",
+      "modified": 1643646972760,
+      "created": 1643646869628,
+      "name": "Development",
+      "data": { "protocol": "http", "host": "localhost", "port": "3333" },
+      "dataPropertyOrder": { "&": ["protocol", "host", "port"] },
+      "color": "#ff0000",
+      "isPrivate": false,
+      "metaSortKey": 1643646869628,
+      "_type": "environment"
+    }
+  ]
+}
