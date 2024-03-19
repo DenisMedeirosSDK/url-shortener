@@ -1,39 +1,86 @@
-import 'dotenv/config';
-import express, { Request, Response, NextFunction } from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
+import fastify from 'fastify'
+import postgres from 'postgres'
+import { z } from 'zod'
+import { sql } from './lib/postgres'
+import { redis } from './lib/redis'
 
-import { getConnection } from './utils/connectDatabase';
-import { routes } from './routes';
-import { limiter } from './middlewares/rateLimiter';
+const app = fastify()
 
-getConnection();
+app.get('/:code', async (request, reply) => {
+  const schemaParams = z.object({
+    code: z.string().min(3),
+  })
 
-const PORT = process.env.PORT as string;
+  const { code } = schemaParams.parse(request.params)
 
-const app = express();
+  const result = await sql/*sql*/`
+    SELECT id, original_url 
+    FROM short_links 
+    WHERE short_links.code = ${code}
+  `
+  if (result.length === 0) {
+    return reply.status(400).send({ messagee: "Link not found" })
+  }
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+  const link = result[0]
 
-app.use(limiter);
+  await redis.zIncrBy('metrics', 1, String(link.id))
 
-app.use(routes);
+  return reply.redirect(301, link.original_url)
 
-app.use(
-  (err: Error, request: Request, response: Response, next: NextFunction) => {
-    if (err instanceof Error) {
-      return response.status(400).json({
-        message: err.message,
-      });
+})
+
+app.get('/api/links', async () => {
+  const result = await sql/*sql*/`
+    SELECT * FROM short_links
+    ORDER BY created_at DESC
+  `
+
+  return result
+})
+
+app.post("/api/links", async (request, reply) => {
+
+  const schemaBody = z.object({
+    code: z.string().min(3),
+    url: z.string().url()
+  })
+
+  const { code, url } = schemaBody.parse(request.body)
+
+  try {
+    const result = await sql/*sql*/`
+    INSERT INTO short_links (code, original_url)
+    VALUES (${code}, ${url})
+    RETURNING id
+  `
+
+    const link = result[0]
+
+    return reply.status(201).send({ shortlinkId: link.id })
+  } catch (error) {
+    if (error instanceof postgres.PostgresError) {
+      if (error.code === '23505') {
+        return reply.status(400).send({ message: 'Duplicated code!' })
+      }
     }
 
-    return response.status(500).json({
-      status: 'Error',
-      message: 'Internal server error',
-    });
+    return reply.status(500).send({ message: "Internal Error" })
   }
-);
+})
 
-app.listen(PORT, () => console.log(`Server running in ${PORT}`));
+app.get("/api/metrics", async (request, reply) => {
+  const result  = await redis.zRangeByScoreWithScores('metrics', 0, 50)
+
+  const metrics = result.sort((a,b) => a.score - b.score)
+  .map(item => {
+    return {
+      shortLinkId: Number(item.value),
+      clicks: item.score
+    }
+  })
+
+  return metrics
+})
+
+app.listen({ port: 3333 }).then(() => console.log("HTTP server running!"))
